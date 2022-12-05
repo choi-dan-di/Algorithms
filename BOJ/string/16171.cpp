@@ -3,7 +3,6 @@
 #include <regex>
 using namespace std;
 string s, k;
-char s[101], k[101];
 int main()
 {
     ios::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL);

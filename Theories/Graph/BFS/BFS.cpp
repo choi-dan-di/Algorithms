@@ -35,7 +35,7 @@ void Bfs(int here)
 {
     // 누구에 의해 발견 되었는지?
     vector<int> parent(6, -1);
-    // 기작점에서 얼만큼 떨어져 있는지?
+    // 시작점에서 얼만큼 떨어져 있는지?
     vector<int> distance(6, -1);
 
     // 발견한 노드 목록 저장
@@ -58,7 +58,7 @@ void Bfs(int here)
         for (int there : adjacent[here])
         {
             if (discovered[there])
-                continue;
+                continue; 
 
             q.push(there);
             discovered[there] = true;
@@ -84,7 +84,5 @@ int main()
 {
     CreateGraph();
 
-    // BfsAll();
-    discovered = vector<bool>(6, false);
-    Bfs(0);
+    BfsAll();
 }

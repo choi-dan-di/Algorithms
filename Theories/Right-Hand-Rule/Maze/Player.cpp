@@ -8,6 +8,33 @@ void Player::Init(Board* board)
 	_pos = board->GetEnterPos();
 	_board = board;
 
+	// RightHand();
+	Bfs();
+}
+
+void Player::Update(uint64 deltaTick)
+{
+	// 길찾기 알고리즘 구현
+	if (_pathIndex >= _path.size())
+		return;
+
+	_sumTick += deltaTick;
+	if (_sumTick >= MOVE_TICK)
+	{
+		_sumTick = 0;
+		_pos = _path[_pathIndex];
+		_pathIndex++;
+	}
+}
+
+bool Player::CanGo(Pos pos)
+{
+	TileType tileType = _board->GetTileType(pos);
+	return tileType == TileType::EMPTY;
+}
+
+void Player::RightHand()
+{
 	Pos pos = _pos;
 
 	_path.clear();
@@ -15,7 +42,7 @@ void Player::Init(Board* board)
 
 	// 길을 먼저 찾기
 	// 목적지 도착하기 전에는 계속 실행
-	Pos dest = board->GetExitPos();
+	Pos dest = _board->GetExitPos();
 
 	Pos front[4] =
 	{
@@ -81,23 +108,80 @@ void Player::Init(Board* board)
 	_path = path;
 }
 
-void Player::Update(uint64 deltaTick)
+void Player::Bfs()
 {
-	// 길찾기 알고리즘 구현
-	if (_pathIndex >= _path.size())
-		return;
+	Pos pos = _pos;
 
-	_sumTick += deltaTick;
-	if (_sumTick >= MOVE_TICK)
+	_path.clear();
+	_path.push_back(pos);
+
+	// 길을 먼저 찾기
+	// 목적지 도착하기 전에는 계속 실행
+	Pos dest = _board->GetExitPos();
+
+	Pos front[4] =
 	{
-		_sumTick = 0;
-		_pos = _path[_pathIndex];
-		_pathIndex++;
-	}
-}
+		Pos { -1, 0 },	// UP
+		Pos { 0, -1 },	// LEFT
+		Pos { 1, 0 },	// DOWN
+		Pos { 0, 1 }	// RIGHT
+	};
 
-bool Player::CanGo(Pos pos)
-{
-	TileType tileType = _board->GetTileType(pos);
-	return tileType == TileType::EMPTY;
+	// 발견했는지 확인
+	const int32 size = _board->GetSize();
+	vector<vector<bool>> discovered(size, vector<bool>(size, false));
+
+	// vector<vector<Pos>> parent;
+	
+	// map 사용
+	// parent[A] = B;
+	// -> A는 B로 인해 발견됨
+	// -> B가 A의 부모 노드
+	map<Pos, Pos> parent;
+
+	queue<Pos> q;
+	q.push(pos);
+	discovered[pos.y][pos.x] = true;
+
+	while (!q.empty())
+	{
+		pos = q.front();
+		q.pop();
+
+		// 방문
+		if (pos == dest)
+			break;
+
+		for (int32 dir = 0; dir < 4; dir++)
+		{
+			Pos nextPos = pos + front[dir];
+			// 갈 수 있는 지역인지 확인
+			if (!CanGo(nextPos))
+				continue;
+			// 이미 발견한 지역인지 확인
+			if (discovered[nextPos.y][nextPos.x])
+				continue;
+
+			q.push(nextPos);
+			discovered[nextPos.y][nextPos.x] = true;
+			parent[nextPos] = pos;
+		}
+	}
+
+	_path.clear();
+	
+	// 경로 계산
+	pos = dest;
+	while (true)
+	{
+		_path.push_back(pos);
+
+		// 시작점은 자신이 곧 부모이다.
+		if (pos == parent[pos])
+			break;
+
+		pos = parent[pos];
+	}
+
+	std::reverse(_path.begin(), _path.end());
 }

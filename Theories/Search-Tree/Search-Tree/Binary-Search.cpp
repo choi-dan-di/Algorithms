@@ -59,7 +59,6 @@ int main()
     bst.Insert(40);
     bst.Insert(50);
     bst.Insert(9);
-    bst.Insert(11);
 
     bst.Delete(10);
 

@@ -1,51 +1,171 @@
-﻿#include <iostream>
-#include <vector>
-#include <list>
-#include <stack>
-#include <queue>
+﻿#include "Binary-Search-Tree.h"
+#include <iostream>
+#include <windows.h>
 using namespace std;
 
-// 이진 탐색 트리
-
-// 이진 탐색(Binary Searc)
-// 상황) 배열에 데이터가 정렬되어 있다.
-// [1][8][15][23][32][44][56][63][81][91]
-
-// Q) 82라는 숫자가 배열에 있습니까?
-// A) 
-// - 순차적 탐색
-//   - 시간 복잡도는 O(N)이 될 것이다. -> 비효율적
-// - 대소 비교 (이진 탐색)
-//   - 시간 복잡도는 O(log N)이 될 것이다. -> 효율적
-
-// 정렬된 배열이기 때문에 이진 탐색 가능
-// -- 배열의 단점
-// --- 중간 삽입/삭제가 느리다. => 해결하기 위해 이진 탐색 "트리"를 만듦
-// - 정렬된 연결 리스트로는 불가 (임의 접근 X)
-vector<int> numbers;
-
-void BinarySearch(int n)
+void SetCursorPosition(int x, int y)
 {
-    int left = 0;
-    int right = (int)numbers.size() - 1;
-
-    while (left <= right)
-    {
-        int mid = (left + right) / 2;
-        if (n < numbers[mid])
-            right = mid - 1;
-        else if (n > numbers[mid])
-            left = mid + 1;
-        else
-        {
-            cout << "Found!" << endl;
-            break;
-        }
-    }
+	HANDLE output = ::GetStdHandle(STD_OUTPUT_HANDLE);
+	COORD pos = { static_cast<SHORT>(x), static_cast<SHORT>(y) };
+	::SetConsoleCursorPosition(output, pos);
 }
 
-int main()
+void BinarySearchTree::Print(Node* node, int x, int y)
 {
-    numbers = vector<int>{ 1, 8, 15, 23, 32, 44, 56, 63, 81, 91 };
-    BinarySearch(82);
+	if (node == nullptr)
+		return;
+
+	SetCursorPosition(x, y);
+	cout << node->key;
+	Print(node->left, x - (5 / (y + 1)), y + 1);
+	Print(node->right, x + (5 / (y + 1)), y + 1);
+}
+
+void BinarySearchTree::Print_Inorder(Node* node)
+{
+	// 전위 순회 (Preorder Traversal)
+	// 중위 순회 (Inorder Traversal)
+	// 후위 순회 (Postorder Traversal)
+
+	//    [중]
+	// [좌]  [우]
+
+	if (node == nullptr)
+		return;
+
+	// 전위 : [중]이 앞에 온다 (중좌우)
+	// 중위 : [중]이 중간에 온다 (좌중우)
+	// 후위 : [중]이 마지막에 온다 (좌우중)
+
+	cout << node->key << endl;	// 전위 순회
+	Print_Inorder(node->left);
+	// cout << node->key << endl;	// 중위 순회
+	Print_Inorder(node->right);
+	// cout << node->key << endl;	// 후위 순회
+}
+
+Node* BinarySearchTree::Search(Node* node, int key)
+{
+	if (node == nullptr || key == node->key)
+		return node;
+
+	if (key < node->key)
+		return Search(node->left, key);
+	else
+		return Search(node->right, key);
+}
+
+Node* BinarySearchTree::Search2(Node* node, int key)
+{
+	while (node && key != node->key)
+	{
+		if (key < node->key)
+			node = node->left;
+		else
+			node = node->right;
+	}
+
+	return node;
+}
+
+Node* BinarySearchTree::Min(Node* node)
+{
+	while (node->left)
+		node = node->left;
+	return node;
+}
+
+Node* BinarySearchTree::Max(Node* node)
+{
+	while (node->right)
+		node = node->right;
+	return node;
+}
+
+Node* BinarySearchTree::Next(Node* node)
+{
+	if (node->right)
+		return Min(node->right);
+
+	Node* parent = node->parent;
+
+	while (parent && node == parent->right)
+	{
+		node = parent;
+		parent = parent->parent;
+	}
+
+	return parent;
+}
+
+void BinarySearchTree::Insert(int key)
+{
+	Node* newNode = new Node();
+	newNode->key = key;
+
+	if (_root == nullptr)
+	{
+		_root = newNode;
+		return;
+	}
+
+	Node* node = _root;
+	Node* parent = nullptr;
+
+	while (node)
+	{
+		parent = node;
+		if (key < node->key)
+			node = node->left;
+		else
+			node = node->right;
+	}
+
+	newNode->parent = parent;
+
+	if (key < parent->key)
+		parent->left = newNode;
+	else
+		parent->right = newNode;
+}
+
+void BinarySearchTree::Delete(int key)
+{
+	Node* deleteNode = Search(_root, key);
+	Delete(deleteNode);
+}
+
+void BinarySearchTree::Delete(Node* node)
+{
+	if (node == nullptr)
+		return;
+
+	if (node->left == nullptr)
+		Replace(node, node->right);
+	else if (node->right == nullptr)
+		Replace(node, node->left);
+	else
+	{
+		// 자식 노드가 2개 모두 있을 때
+		// 다음 데이터 찾기
+		Node* next = Next(node);
+		node->key = next->key;
+		Delete(next);
+	}
+}
+
+// u 서브트리를 v 서브트리로 교체
+void BinarySearchTree::Replace(Node* u, Node* v)
+{
+	if (u->parent == nullptr)
+		_root = v;
+	else if (u == u->parent->left)
+		u->parent->left = v;
+	else
+		u->parent->right = v;
+
+	if (v)
+		v->parent = u->parent;
+
+	delete u;
 }

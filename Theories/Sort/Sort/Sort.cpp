@@ -69,6 +69,9 @@ void InsertionSort(vector<int>& v)
 {
     const int n = (int)v.size();
 
+    // 1 + 2 + ... + (N+2) + (N-1)
+    // 등차수열의 합 = N * (N-1) / 2
+    // 시간 복잡도는 O(N^2)
     for (int i = 1; i < n; i++)
     {
         int insertData = v[i];

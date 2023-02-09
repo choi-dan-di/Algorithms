@@ -14,6 +14,7 @@ int Partition(vector<int>& v, int left, int right)
     int low = left + 1;
     int high = right;
 
+    // O(N)
     while (low <= high)
     {
         while (low <= right && pivot >= v[low])
@@ -30,7 +31,8 @@ int Partition(vector<int>& v, int left, int right)
     return high;
 }
 
-// [5][1][3][7][9][2][4][6][8]
+// 최악의 경우 O(N^2)
+// 평균적으로는 O(Nlog N)
 void QuickSort(vector<int>& v, int left, int right)
 {
     if (left > right)

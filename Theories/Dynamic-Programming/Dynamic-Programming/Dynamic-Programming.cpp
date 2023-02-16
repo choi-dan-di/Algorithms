@@ -3,7 +3,7 @@
 #include <list>
 #include <stack>
 #include <queue>
-#include <Windows.h>
+#include <windows.h>
 using namespace std;
 
 // 동적 계획법 (DP : Dynamic Programming)

@@ -26,8 +26,6 @@ vector<int> seq;
 int LIS(int pos)
 {
     // 기저 사항
-    // if (pos == seq.size() - 1)
-    //     return 1;
 
     // 캐시 확인
     int& ret = cache[pos];

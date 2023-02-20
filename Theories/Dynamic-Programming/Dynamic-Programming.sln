@@ -9,6 +9,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LIS", "LIS\LIS.vcxproj", "{
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Triangle-Path", "Triangle-Path\Triangle-Path.vcxproj", "{9C0B09D6-68F6-4D7B-A3DF-179C1DD02A26}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TIC-TAC-TOE", "TIC-TAC-TOE\TIC-TAC-TOE.vcxproj", "{1BBE291E-D137-4202-81A3-3EBB46028129}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -41,6 +43,14 @@ Global
 		{9C0B09D6-68F6-4D7B-A3DF-179C1DD02A26}.Release|x64.Build.0 = Release|x64
 		{9C0B09D6-68F6-4D7B-A3DF-179C1DD02A26}.Release|x86.ActiveCfg = Release|Win32
 		{9C0B09D6-68F6-4D7B-A3DF-179C1DD02A26}.Release|x86.Build.0 = Release|Win32
+		{1BBE291E-D137-4202-81A3-3EBB46028129}.Debug|x64.ActiveCfg = Debug|x64
+		{1BBE291E-D137-4202-81A3-3EBB46028129}.Debug|x64.Build.0 = Debug|x64
+		{1BBE291E-D137-4202-81A3-3EBB46028129}.Debug|x86.ActiveCfg = Debug|Win32
+		{1BBE291E-D137-4202-81A3-3EBB46028129}.Debug|x86.Build.0 = Debug|Win32
+		{1BBE291E-D137-4202-81A3-3EBB46028129}.Release|x64.ActiveCfg = Release|x64
+		{1BBE291E-D137-4202-81A3-3EBB46028129}.Release|x64.Build.0 = Release|x64
+		{1BBE291E-D137-4202-81A3-3EBB46028129}.Release|x86.ActiveCfg = Release|Win32
+		{1BBE291E-D137-4202-81A3-3EBB46028129}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

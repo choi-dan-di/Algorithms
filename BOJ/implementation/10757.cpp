@@ -10,7 +10,7 @@ vector<int> av, bv;
 int main()
 {
     ios::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL);
-    // 
+    // 큰 수 A+B
     cin >> A >> B;
 
     if (A.size() > B.size())

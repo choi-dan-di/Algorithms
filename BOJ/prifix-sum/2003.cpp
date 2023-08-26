@@ -22,7 +22,7 @@ int main()
             if (sumArr[j] - sumArr[i - 1] == M)
                 cnt++;
 
-    cout << cnt; 
+    cout << cnt;   
 
     return 0;
 }
